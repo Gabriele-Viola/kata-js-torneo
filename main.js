@@ -142,45 +142,104 @@ let nextTurnOther = []
 
 console.log(fightersQualificated.length % 2 != 0);
 
-if (fightersQualificated.length % 2 == 0) {
+if (fightersQualificated.length % 2 != 0) {
     let passTheNextTurn = fightersQualificated[fightersQualificated.length - 1]
     nextTurnOther.push(passTheNextTurn)
-    fightersQualificated.filter(item => item != passTheNextTurn)
+    fightersQualificated = fightersQualificated.filter(item => item != passTheNextTurn)
     console.log(passTheNextTurn || 'is Empty');
 
 }
 console.log('without odd: ', fightersQualificated);
 
-function round(figheters) {
+function round(allFigheters, brench) {
     let nextTurn = []
     let loser = []
-    for (let i = 0; i < figheters.length; i += 2) {
-        let fighter1 = figheters[i]
-        let fighter2 = figheters[i + 1]
-        console.log('sono nel ciclo fori fighter sono: ', figheters);
+let panchina = [...brench]
+console.log(panchina);
+console.log('non è la semifinale: ',allFigheters.length > 4);
+console.log('la lenght dei combattenti è: ',allFigheters.length);
+    if (allFigheters.length > 4) {
+        for (let i = 0; i < allFigheters.length; i += 2) {
+            let fighter1 = allFigheters[i]
+            let fighter2 = allFigheters[i + 1]
+            console.log('sono nel ciclo fori fighter sono: ', allFigheters);
 
 
-        console.log('fighter1: ', fighter1, 'fighter2: ', fighter2);
-        console.log('this', fighter1.trainingPower);
+            console.log('fighter1: ', fighter1, 'fighter2: ', fighter2);
+            console.log('this', fighter1.trainingPower);
 
 
-        if (fighter1.trainingPower > fighter2.trainingPower) {
-            console.log('1 vince: ', fighter1);
-            loser.push(fighter2)
-            nextTurn.push(fighter1)
-        } else {
-            console.log('2 vince: ', fighter2);
-            loser.push(fighter1)
-            nextTurn.push(fighter2)
+            if (fighter1.trainingPower > fighter2.trainingPower) {
+                console.log('1 vince: ', fighter1);
+                loser.push(fighter2)
+                nextTurn.push(fighter1)
+            } else {
+                console.log('2 vince: ', fighter2);
+                loser.push(fighter1)
+                nextTurn.push(fighter2)
+            }
         }
-    }
-    console.log('prossimo turno: ', nextTurn);
-    console.log('questi passono al prossimo turno', nextTurn);
+        console.log('lunghezza: ',nextTurn.length );
+        console.log('panchina piena?: ',panchina.length == 1 );
+        console.log('eliminati: ',loser );
+        console.log('ripescato: ', loser[Math.floor(Math.random() * loser.length )]);
+        if(nextTurn.length %2 != 0 && panchina.length == 1){
+            nextTurn.push(panchina[0])
+            panchina.pop()
+        }else if (nextTurn.length %2 != 0) {
+            nextTurn.push(loser[Math.floor(Math.random() * loser.length )])
+        }
+        return nextTurn
+    } else {
+        let thirdFourth = []
+        let firstSecond = []
+        for (let i = 0; i < allFigheters.length; i += 2) {
+            let fighter1 = allFigheters[i]
+            let fighter2 = allFigheters[i + 1]
+            console.log('sono nel ciclo fori fighter sono: ', allFigheters);
 
-    if (nextTurn.length % 2 != 0 && nextTurn.length > 1) {
-        nextTurn.push(loser[Math.floor(Math.random() * loser.length - 1)])
+
+            console.log('fighter1: ', fighter1, 'fighter2: ', fighter2);
+            console.log('this', fighter1.trainingPower);
+
+
+            if (fighter1.trainingPower > fighter2.trainingPower) {
+                console.log('1 vince: ', fighter1);
+                thirdFourth.push(fighter2)
+                firstSecond.push(fighter1)
+            } else {
+                console.log('2 vince: ', fighter2);
+                thirdFourth.push(fighter1)
+                firstSecond.push(fighter2)
+            }
+        }
+        let first = ''
+        let second = ''
+        let third = ''
+        if (firstSecond[0] >= firstSecond[1]) {
+            first = firstSecond[0]
+            second = firstSecond[1]
+        } else {
+            first = firstSecond[1]
+            second = firstSecond[0]
+        }
+        if (thirdFourth[0] >= thirdFourth[1]) {
+            third = thirdFourth[0]
+        }else{
+
+            third = thirdFourth[1]
+        }
+        return ['primo classificato: ',first.name,'secondo classificato: ', second.name,'terzo classificato: ',third.name]
     }
-    return nextTurn
+
+    console.log('qui finisco un turno: ', nextTurn);
+    
+    
+    // console.log('questi passono al prossimo turno', nextTurn);
+
+
+
+   
 }
 
 // for (let i = 0; i < fightersQualificated.length; i += 2) {
@@ -199,7 +258,15 @@ function round(figheters) {
 //     console.log('qualificati al primo turno: ', nextTurn);
 
 // }
-console.log(round(fightersQualificated));
+
+const firstRound = round(fightersQualificated, nextTurnOther)
+const secondRound = round(firstRound, nextTurnOther)
+const thirdRound = round(secondRound, nextTurnOther)
+console.log('qualificati: ', fightersQualificated);
+console.log('primo turno',firstRound);
+console.log('secondo turno',secondRound);
+console.log('terzo turno',thirdRound);
+
 
 // console.log('primo round: ', firstRound);
 // console.log('secondo round: '.secondRound);
