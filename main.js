@@ -120,7 +120,7 @@ console.log(fightersArmed);
 
 
 let trainingFighters = fightersArmed.map(fighter => {
-    let multiplier = Math.floor(Math.random() * 100) + 1
+    const multiplier = Math.floor(Math.random() * 100) + 1
     let treaning = (fighter.power + fighter.weapon.power) * multiplier
     console.log('fighter: ', fighter.name, 'total power: ', treaning);
     console.log('fighter power: ', fighter.power, 'weapon power: ', fighter.weapon.power, 'multiplier: ', multiplier);
@@ -136,3 +136,73 @@ let fightersQualificated = [...trainingFighters]
 fightersQualificated = fightersQualificated.filter(fighters => fighters.trainingPower >= 8000)
 
 console.log(fightersQualificated);
+
+//start fighting
+
+let nextTurnOther = []
+
+if (fightersQualificated.length % 2 !== 0) {
+
+    nextTurnOther.push(fightersQualificated[fightersQualificated.length - 1])
+    fightersQualificated.filter(item => item != nextTurnOther[0])
+}
+
+console.log(nextTurnOther[0] || 'is Empty');
+
+function round(figheters) {
+    let nextTurn = []
+    for (let i = 0; i < figheters.length; i += 2) {
+        let fighter1 = figheters[i]
+        let fighter2 = figheters[i + 1]
+        console.log('sono nel ciclo for');
+
+
+        console.log('fighter1: ', figheters[i], 'fighter2: ', figheters[i + 1]);
+        console.log('this', figheters[i].trainingPower);
+
+
+        if (figheters[i].trainingPower > figheters[i + 1].trainingPower) {
+            console.log('1 vince');
+
+            nextTurn.push(figheters[i])
+        } else {
+            console.log('2 vince');
+            nextTurn.push(figheters[i + 1])
+        }
+
+        console.log('prossimo turno: ', nextTurn);
+    }
+    return nextTurn
+}
+
+// for (let i = 0; i < fightersQualificated.length; i += 2) {
+//     let fighter1 = fightersQualificated[i]
+//     let fighter2 = fightersQualificated[i + 1]
+//     console.log('sono nel ciclo for');
+
+
+//     console.log('fighter1: ', fighter1, 'fighter2: ', fighter2);
+
+//     if (fighter1.trainingPower > fighter2.trainingPower) {
+//         nextTurn.push(fighter1)
+//     } else {
+//         nextTurn.push(fighter2)
+//     }
+//     console.log('qualificati al primo turno: ', nextTurn);
+
+// }
+console.log(round(fightersQualificated));
+
+// console.log('primo round: ', firstRound);
+// console.log('secondo round: '.secondRound);
+
+
+
+// console.log(
+//     round(fightersQualificated)
+
+// );
+
+
+
+
