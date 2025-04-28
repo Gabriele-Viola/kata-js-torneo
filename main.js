@@ -122,55 +122,63 @@ console.log(fightersArmed);
 let trainingFighters = fightersArmed.map(fighter => {
     const multiplier = Math.floor(Math.random() * 100) + 1
     let treaning = (fighter.power + fighter.weapon.power) * multiplier
-    console.log('fighter: ', fighter.name, 'total power: ', treaning);
-    console.log('fighter power: ', fighter.power, 'weapon power: ', fighter.weapon.power, 'multiplier: ', multiplier);
-
+    // console.log('fighter: ', fighter.name, 'total power: ', treaning);
+    // console.log('fighter power: ', fighter.power, 'weapon power: ', fighter.weapon.power, 'multiplier: ', multiplier);
 
     return { ...fighter, trainingPower: treaning }
 })
-console.log(trainingFighters);
+console.log('training: ', trainingFighters);
 
 //qualifications
 
 let fightersQualificated = [...trainingFighters]
 fightersQualificated = fightersQualificated.filter(fighters => fighters.trainingPower >= 8000)
 
-console.log(fightersQualificated);
+console.log('filtered', fightersQualificated);
 
 //start fighting
 
 let nextTurnOther = []
 
-if (fightersQualificated.length % 2 !== 0) {
+console.log(fightersQualificated.length % 2 != 0);
 
-    nextTurnOther.push(fightersQualificated[fightersQualificated.length - 1])
-    fightersQualificated.filter(item => item != nextTurnOther[0])
+if (fightersQualificated.length % 2 == 0) {
+    let passTheNextTurn = fightersQualificated[fightersQualificated.length - 1]
+    nextTurnOther.push(passTheNextTurn)
+    fightersQualificated.filter(item => item != passTheNextTurn)
+    console.log(passTheNextTurn || 'is Empty');
+
 }
-
-console.log(nextTurnOther[0] || 'is Empty');
+console.log('without odd: ', fightersQualificated);
 
 function round(figheters) {
     let nextTurn = []
+    let loser = []
     for (let i = 0; i < figheters.length; i += 2) {
         let fighter1 = figheters[i]
         let fighter2 = figheters[i + 1]
-        console.log('sono nel ciclo for');
+        console.log('sono nel ciclo fori fighter sono: ', figheters);
 
 
-        console.log('fighter1: ', figheters[i], 'fighter2: ', figheters[i + 1]);
-        console.log('this', figheters[i].trainingPower);
+        console.log('fighter1: ', fighter1, 'fighter2: ', fighter2);
+        console.log('this', fighter1.trainingPower);
 
 
-        if (figheters[i].trainingPower > figheters[i + 1].trainingPower) {
-            console.log('1 vince');
-
-            nextTurn.push(figheters[i])
+        if (fighter1.trainingPower > fighter2.trainingPower) {
+            console.log('1 vince: ', fighter1);
+            loser.push(fighter2)
+            nextTurn.push(fighter1)
         } else {
-            console.log('2 vince');
-            nextTurn.push(figheters[i + 1])
+            console.log('2 vince: ', fighter2);
+            loser.push(fighter1)
+            nextTurn.push(fighter2)
         }
+    }
+    console.log('prossimo turno: ', nextTurn);
+    console.log('questi passono al prossimo turno', nextTurn);
 
-        console.log('prossimo turno: ', nextTurn);
+    if (nextTurn.length % 2 != 0 && nextTurn.length > 1) {
+        nextTurn.push(loser[Math.floor(Math.random() * loser.length - 1)])
     }
     return nextTurn
 }
