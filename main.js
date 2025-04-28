@@ -119,13 +119,20 @@ console.log(fightersArmed);
 //  training
 
 
-fightersArmed.forEach(fighter => {
+let trainingFighters = fightersArmed.map(fighter => {
     let multiplier = Math.floor(Math.random() * 100) + 1
-    let treaning = fighter.power + fighter.weapon.power * multiplier
+    let treaning = (fighter.power + fighter.weapon.power) * multiplier
     console.log('fighter: ', fighter.name, 'total power: ', treaning);
     console.log('fighter power: ', fighter.power, 'weapon power: ', fighter.weapon.power, 'multiplier: ', multiplier);
 
 
     return { ...fighter, trainingPower: treaning }
 })
+console.log(trainingFighters);
 
+//qualifications
+
+let fightersQualificated = [...trainingFighters]
+fightersQualificated = fightersQualificated.filter(fighters => fighters.trainingPower >= 8000)
+
+console.log(fightersQualificated);
