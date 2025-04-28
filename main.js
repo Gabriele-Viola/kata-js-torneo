@@ -100,7 +100,7 @@ const weapons = [
         power: 250
     }
 ];
-
+// assegnazione armi
 let choosenWeapons = [...weapons]
 let choosenWeapon = ''
 
@@ -116,3 +116,16 @@ let fightersArmed = fighters.map(fighter => {
 )
 
 console.log(fightersArmed);
+//  training
+
+
+fightersArmed.forEach(fighter => {
+    let multiplier = Math.floor(Math.random() * 100) + 1
+    let treaning = fighter.power + fighter.weapon.power * multiplier
+    console.log('fighter: ', fighter.name, 'total power: ', treaning);
+    console.log('fighter power: ', fighter.power, 'weapon power: ', fighter.weapon.power, 'multiplier: ', multiplier);
+
+
+    return { ...fighter, trainingPower: treaning }
+})
+
