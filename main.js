@@ -101,62 +101,69 @@ const weapons = [
     }
 ];
 // assegnazione armi
-let choosenWeapons = [...weapons]
-let choosenWeapon = ''
 
-let fightersArmed = fighters.map(fighter => {
+function weaponsAssignment(fighterArray, weaponsArray) {
 
-    choosenWeapon = choosenWeapons[Math.floor(Math.random() * choosenWeapons.length)]
+    let choosenWeapons = [...weaponsArray]
+    let choosenWeapon = ''
 
-    choosenWeapons = choosenWeapons.filter(weapon => weapon.name !== choosenWeapon.name)
-    return { ...fighter, weapon: choosenWeapon }
+    let fightersArmed = fighterArray.map(fighter => {
 
+        choosenWeapon = choosenWeapons[Math.floor(Math.random() * choosenWeapons.length)]
 
-}
-)
-
-console.log('combattenti armati: ', fightersArmed);
-//  training
+        choosenWeapons = choosenWeapons.filter(weapon => weapon.name !== choosenWeapon.name)
+        return { ...fighter, weapon: choosenWeapon }
 
 
-let trainingFighters = fightersArmed.map(fighter => {
-    const multiplier = Math.floor(Math.random() * 100) + 1
-    let treaning = (fighter.power + fighter.weapon.power) * multiplier
-    // console.log('fighter: ', fighter.name, 'total power: ', treaning);
-    // console.log('fighter power: ', fighter.power, 'weapon power: ', fighter.weapon.power, 'multiplier: ', multiplier);
+    }
 
-    return { ...fighter, trainingPower: treaning }
-})
-console.log('training: ', trainingFighters);
-
-//qualifications
-
-let fightersQualificated = [...trainingFighters]
-fightersQualificated = fightersQualificated.filter(fighters => fighters.trainingPower >= 8000)
-
-console.log('qualificated: ', fightersQualificated);
-
-//start fighting
-
-let nextTurnOther = []
-
-
-if (fightersQualificated.length % 2 != 0) {
-    let passTheNextTurn = fightersQualificated[fightersQualificated.length - 1]
-    nextTurnOther.push(passTheNextTurn)
-    fightersQualificated = fightersQualificated.filter(item => item != passTheNextTurn)
-    console.log(nextTurnOther[0] || 'is Empty');
+    )
+    return fightersArmed
 
 }
-console.log('without odd: ', fightersQualificated);
 
-function round(allFigheters, brench) {
+function training(fighterWithArm) {
+
+    let trainingFighters = fighterWithArm.map(fighter => {
+        const multiplier = Math.floor(Math.random() * 100) + 1
+        let treaning = (fighter.power + fighter.weapon.power) * multiplier
+        // console.log('fighter: ', fighter.name, 'total power: ', treaning);
+        // console.log('fighter power: ', fighter.power, 'weapon power: ', fighter.weapon.power, 'multiplier: ', multiplier);
+
+        return { ...fighter, trainingPower: treaning }
+    })
+    return trainingFighters
+}
+
+function qualifications(fighterWithTraining) {
+
+    let fightersQualificated = [...fighterWithTraining]
+    fightersQualificated = fightersQualificated.filter(fighters => fighters.trainingPower >= 8000)
+
+    return fightersQualificated
+}
+
+function round(allFigheters) {
+
+
+    let brench = []
+
+
+    if (allFigheters.length % 2 != 0) {
+        let passTheNextTurn = allFigheters[allFigheters.length - 1]
+        brench.push(passTheNextTurn)
+        allFigheters = allFigheters.filter(item => item != passTheNextTurn)
+        console.log(brench[0] || 'is Empty');
+
+    }
+
+
+
     let nextTurn = []
     let loser = []
-let panchina = [...brench]
-console.log(panchina);
-console.log('non è la semifinale: ',allFigheters.length > 4);
-console.log('la length dei combattenti è: ',allFigheters.length);
+    console.log(brench);
+    console.log('non è la semifinale: ', allFigheters.length > 4);
+    console.log('la length dei combattenti è: ', allFigheters.length);
     if (allFigheters.length > 4) {
         for (let i = 0; i < allFigheters.length; i += 2) {
             let fighter1 = allFigheters[i]
@@ -179,16 +186,16 @@ console.log('la length dei combattenti è: ',allFigheters.length);
             }
         }
         // console.log('lunghezza: ',nextTurn.length );
-        // console.log('panchina piena?: ',panchina.length == 1 );
+        // console.log('brench piena?: ',brench.length == 1 );
         // console.log('eliminati: ',loser );
         // console.log('ripescato: ', loser[Math.floor(Math.random() * loser.length )]);
-        if(nextTurn.length %2 != 0 && panchina.length == 1){
-            nextTurn.push(panchina[0])
-            panchina.pop()
-        }else if (nextTurn.length %2 != 0) {
-            nextTurn.push(loser[Math.floor(Math.random() * loser.length )])
+        if (nextTurn.length % 2 != 0 && brench.length == 1) {
+            nextTurn.push(brench[0])
+            brench.pop()
+        } else if (nextTurn.length % 2 != 0) {
+            nextTurn.push(loser[Math.floor(Math.random() * loser.length)])
         }
-        return round(nextTurn, panchina);
+        return round(nextTurn, brench);
     } else {
         let thirdFourth = []
         let firstSecond = []
@@ -224,21 +231,44 @@ console.log('la length dei combattenti è: ',allFigheters.length);
         }
         if (thirdFourth[0] >= thirdFourth[1]) {
             third = thirdFourth[0]
-        }else{
+        } else {
 
             third = thirdFourth[1]
         }
         return [`primo classificato:${first.name}, secondo classificato: ${second.name}, terzo classificato: ${third.name}`]
     }
 
-   
+
 }
 
-const firstRound = round(fightersQualificated, nextTurnOther)
+const fightersArmed = weaponsAssignment(fighters, weapons)
+
+const trainingFighters = training(fightersArmed)
+
+const fightersQualificated = qualifications(trainingFighters)
+
+const Resoults = round(fightersQualificated)
+
+console.log('combattenti armati: ', fightersArmed);
+
+//  training
+
+
+console.log('training: ', trainingFighters);
+
+//qualifications
+
+
+console.log('qualificated: ', fightersQualificated);
+
+//start fighting
+
+console.log('without odd: ', fightersQualificated);
+
 
 console.log('qualificati: ', fightersQualificated);
 
-console.log('vincitori: ',firstRound);
+console.log('vincitori: ', Resoults);
 
 
 
